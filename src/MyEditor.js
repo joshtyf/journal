@@ -26,8 +26,17 @@ function MyEditor() {
     }
   };
 
-  const handleSaveClick = () => {
-    console.log("saving...");
+  const saveContent = (title) => {
+    console.log(`saving ${title}...`);
+
+    const rawContent = convertToRaw(editorState.getCurrentContent());
+    const data = {
+      'title': title,
+      'rawContent': rawContent
+    }
+
+    console.log(data);
+
     window.localStorage.setItem(
       "rawContent",
       JSON.stringify(convertToRaw(editorState.getCurrentContent()))
@@ -36,7 +45,7 @@ function MyEditor() {
 
   return (
     <div className="flex flex-col space-y-4">
-      <EditorToolBar handleSaveClick={handleSaveClick} />
+      <EditorToolBar onSave={saveContent} />
       <div className="border-2">
         <Editor
           placeholder="Begin typing here..."
