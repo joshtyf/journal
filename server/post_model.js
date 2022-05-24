@@ -10,7 +10,7 @@ const pool = new Pool({
 });
 
 const getPosts = () => {
-  return new Promise(function (resolve, reject) {
+  return new Promise((resolve, reject) => {
     pool.query("SELECT * FROM posts", (error, results) => {
       if (error) {
         reject(error);
@@ -21,7 +21,7 @@ const getPosts = () => {
 };
 
 const createPost = (post) => {
-  return new Promise(function (resolve, reject) {
+  return new Promise((resolve, reject) => {
     const { title, content } = post;
     pool.query(
       "INSERT INTO posts (title, content) VALUES ($1, $2) RETURNING *",
