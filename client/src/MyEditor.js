@@ -3,10 +3,10 @@ import { convertToRaw, Editor, EditorState } from "draft-js";
 import "draft-js/dist/Draft.css";
 import EditorToolBar from "./EditorToolBar";
 
-export default function MyEditor() {
-  const [editorState, setEditorState] = useState(() => {
-    return EditorState.createEmpty();
-  });
+export default function MyEditor({ selectedPost }) {
+  const [editorState, setEditorState] = useState(() =>
+    EditorState.createEmpty()
+  );
 
   const saveData = (title) => {
     const content = convertToRaw(editorState.getCurrentContent());
