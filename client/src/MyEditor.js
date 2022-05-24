@@ -15,7 +15,7 @@ export default function MyEditor() {
       content: content,
     };
 
-    fetch("/", {
+    fetch("/api", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

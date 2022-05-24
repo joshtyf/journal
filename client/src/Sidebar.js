@@ -4,7 +4,7 @@ export default function Sidebar() {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3001/")
+    fetch("/api")
       .then((res) => res.json())
       .then((data) => setPosts(data));
   }, []);

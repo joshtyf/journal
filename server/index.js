@@ -1,6 +1,9 @@
 import express from "express";
 import cors from "cors";
 import { getPosts, createPost } from "./post_model.js";
+import path from "path";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -12,7 +15,15 @@ app.use(
   })
 );
 
-app.get("/", (req, res) => {
+const env = process.env.NODE_ENV || "development";
+if (env == "production") {
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = dirname(__filename);
+  const buildPath = path.join(__dirname, "..", "client", "build");
+  app.use(express.static(buildPath));
+}
+
+app.get("/api", (req, res) => {
   getPosts()
     .then((response) => {
       res.status(200).send(response);
@@ -22,7 +33,7 @@ app.get("/", (req, res) => {
     });
 });
 
-app.post("/", (req, res) => {
+app.post("/api", (req, res) => {
   createPost(req.body)
     .then((response) => {
       res.status(200).send(response);
