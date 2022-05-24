@@ -1,12 +1,23 @@
 import React, { useState } from "react";
-import { convertToRaw, Editor, EditorState } from "draft-js";
+import { convertToRaw, Editor, EditorState, RichUtils } from "draft-js";
 import "draft-js/dist/Draft.css";
 import EditorToolBar from "./EditorToolBar";
 
-export default function MyEditor({ selectedPost }) {
+export default function MyEditor() {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
+
+  const handleKeyCommand = (command, editorState) => {
+    const newState = RichUtils.handleKeyCommand(editorState, command);
+
+    if (newState) {
+      setEditorState(newState);
+      return "handled";
+    }
+
+    return "not-handled";
+  };
 
   const saveData = (title) => {
     const content = convertToRaw(editorState.getCurrentContent());
@@ -33,6 +44,7 @@ export default function MyEditor({ selectedPost }) {
         <Editor
           editorState={editorState}
           onChange={setEditorState}
+          handleKeyCommand={handleKeyCommand}
           placeholder="Start typing here..."
         />
       </div>
