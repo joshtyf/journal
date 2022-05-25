@@ -21,7 +21,7 @@ export default function Reader({ postId }) {
   }, [postId]);
 
   return (
-    <div className="shadow-md border-2 p-2">
+    <div className="p-4 rounded-md shadow-md border-2 border-opacity-50 border-gray-100">
       <div className="font-bold">{postTitle}</div>
       <Editor editorState={editorState} readOnly />
     </div>
