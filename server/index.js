@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { getPosts, createPost } from "./post_model.js";
+import { getPosts, createPost, updatePost } from "./post_model.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
@@ -41,6 +41,14 @@ app.post("/api", (req, res) => {
     .catch((error) => {
       res.status(500).send(error);
     });
+});
+
+app.patch("/api/:id", (req, res) => {
+  updatePost(req.body)
+    .then((response) => {
+      res.status(200).send(response);
+    })
+    .catch((error) => res.status(500).send(error));
 });
 
 app.listen(PORT, () => {

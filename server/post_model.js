@@ -36,4 +36,20 @@ const createPost = (post) => {
   });
 };
 
-export { getPosts, createPost };
+const updatePost = (updatedPost) => {
+  return new Promise((resolve, reject) => {
+    const {id, content} = updatedPost;
+    pool.query(
+      "UPDATE posts SET content = $1 WHERE id = $2",
+      [content, id],
+      (error, results) => {
+        if (error) {
+          reject(error);
+        }
+        resolve(`Post updated`);
+      }
+    );
+  });
+};
+
+export { getPosts, createPost, updatePost };

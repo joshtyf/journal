@@ -1,4 +1,4 @@
-import { convertFromRaw, Editor, EditorState } from "draft-js";
+import { convertFromRaw, convertToRaw, Editor, EditorState } from "draft-js";
 import React, { useState } from "react";
 
 export default function Reader({ selectedPost, onClose }) {
@@ -8,6 +8,26 @@ export default function Reader({ selectedPost, onClose }) {
   });
 
   const [readOnly, setReadOnly] = useState(true);
+
+  const updatePost = () => {
+    const data = {
+      id: selectedPost.id,
+      content: convertToRaw(editorState.getCurrentContent()),
+    };
+
+    fetch(`/api/${selectedPost.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.text())
+      .then((res) => console.log(res));
+  };
+
+  const handleSave = () => {
+    updatePost();
+    setReadOnly(true);
+  };
 
   return (
     <div className="flex flex-col gap-y-2">
@@ -20,10 +40,7 @@ export default function Reader({ selectedPost, onClose }) {
             Edit
           </button>
         ) : (
-          <button
-            className="bg-blue-400 rounded-md p-2"
-            onClick={() => setReadOnly(true)}
-          >
+          <button className="bg-blue-400 rounded-md p-2" onClick={handleSave}>
             Save
           </button>
         )}
