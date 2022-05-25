@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { MainScreenContext } from "./App";
 
 import {
   faEye,
@@ -7,8 +8,9 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 
-export default function SidebarItem({ post, selectPost }) {
+export default function SidebarItem({ post }) {
   const [focused, setFocused] = useState(false);
+  const changeMainScreen = useContext(MainScreenContext);
 
   return (
     <div
@@ -19,7 +21,6 @@ export default function SidebarItem({ post, selectPost }) {
       <div
         key={post.id}
         className="shadow-md border-l-8 border-red-500 p-2 cursor-pointer hover:border-red-700 rounded-l-lg min-w-full"
-        onClick={() => selectPost(post.id)}
       >
         {post.title}
       </div>
@@ -31,17 +32,17 @@ export default function SidebarItem({ post, selectPost }) {
         <FontAwesomeIcon
           className="cursor-pointer hover:text-blue-400"
           icon={faEye}
-          onClick={() => console.log("clicked")}
+          onClick={() => changeMainScreen(post.id, "view")}
         />
         <FontAwesomeIcon
           className="cursor-pointer hover:text-yellow-400"
           icon={faPenToSquare}
-          onClick={() => console.log("clicked")}
+          onClick={() => changeMainScreen(post.id, "edit")}
         />
         <FontAwesomeIcon
           className="cursor-pointer hover:text-red-400"
           icon={faTrash}
-          onClick={() => console.log("clicked")}
+          onClick={() => changeMainScreen(post.id, "delete")}
         />
       </div>
     </div>

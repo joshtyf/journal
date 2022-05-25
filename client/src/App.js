@@ -1,29 +1,31 @@
-import MyEditor from "./MyEditor";
 import "./index.css";
 import Sidebar from "./Sidebar";
-import { useState } from "react";
+import { createContext, useState } from "react";
 import Reader from "./Reader";
 
-function App() {
-  const [selectedPost, setSelectedPost] = useState(null);
+export const MainScreenContext = createContext();
 
-  const selectPost = (post) => setSelectedPost(post);
-  const deselectPost = () => setSelectedPost(null);
+export default function App() {
+  const [mainScreenComponent, setMainScreenComponent] = useState(null);
+
+  const changeMainScreen = (postId, mode) => {
+    fetch(`/api/${postId}`)
+      .then((res) => res.json())
+      .then((res) => {
+        if (mode === "view") {
+          setMainScreenComponent(<Reader post={res} />);
+        }
+      });
+  };
 
   return (
     <div className="p-4 flex space-x-2">
       <div className="w-1/12 border-r-2">
-        <Sidebar selectPost={selectPost} />
+        <MainScreenContext.Provider value={changeMainScreen}>
+          <Sidebar />
+        </MainScreenContext.Provider>
       </div>
-      <div className="w-11/12">
-        {selectedPost ? (
-          <Reader selectedPost={selectedPost} onClose={deselectPost} />
-        ) : (
-          <MyEditor />
-        )}
-      </div>
+      <div className="w-11/12">{mainScreenComponent || "Select a post"}</div>
     </div>
   );
 }
-
-export default App;

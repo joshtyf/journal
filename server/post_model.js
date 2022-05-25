@@ -20,6 +20,17 @@ const getPosts = () => {
   });
 };
 
+const getPost = (id) => {
+  return new Promise((resolve, reject) => {
+    pool.query("SELECT * FROM posts WHERE id = $1", [id], (error, result) => {
+      if (error) {
+        reject(error);
+      }
+      resolve(result.rows[0]);
+    });
+  });
+};
+
 const createPost = (post) => {
   return new Promise((resolve, reject) => {
     const { title, content } = post;
@@ -38,7 +49,7 @@ const createPost = (post) => {
 
 const updatePost = (updatedPost) => {
   return new Promise((resolve, reject) => {
-    const {id, content} = updatedPost;
+    const { id, content } = updatedPost;
     pool.query(
       "UPDATE posts SET content = $1 WHERE id = $2",
       [content, id],
@@ -52,4 +63,4 @@ const updatePost = (updatedPost) => {
   });
 };
 
-export { getPosts, createPost, updatePost };
+export { getPosts, createPost, updatePost, getPost };
