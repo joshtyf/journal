@@ -10,7 +10,7 @@ import {
 
 export default function SidebarItem({ post }) {
   const [focused, setFocused] = useState(false);
-  const [,setMainScreenContext] = useContext(MainScreenContext);
+  const [, setMainScreenContext] = useContext(MainScreenContext);
 
   return (
     <div
@@ -20,7 +20,7 @@ export default function SidebarItem({ post }) {
     >
       <div
         key={post.id}
-        className="shadow-md border-l-8 border-red-500 p-2 cursor-pointer hover:border-red-700 rounded-l-lg min-w-full"
+        className="shadow-md border-l-8 border-purple-400 p-2 cursor-pointer hover:border-purple-500 rounded-l-lg min-w-full transition-colors ease-in-out"
       >
         {post.title}
       </div>
