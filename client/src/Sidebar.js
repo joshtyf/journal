@@ -12,7 +12,7 @@ export default function Sidebar({ selectedPostId }) {
 
   return (
     <div className="flex flex-col gap-y-2">
-      <div className="font-medium">Journal</div>
+      <div className="font-bold text-xl">Journal App</div>
       {posts.map((post) => {
         return (
           <SidebarItem

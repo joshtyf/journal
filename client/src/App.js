@@ -21,10 +21,10 @@ export default function App() {
       value={[[selectedPostId, mode], setMainScreenContext]}
     >
       <div className="p-4 flex space-x-2">
-        <div className="w-1/12 border-r-2">
+        <div className="w-1/6 border-r-2">
           <Sidebar selectedPostId={selectedPostId}/>
         </div>
-        <div className="w-11/12">
+        <div className="w-5/6">
           {mode === "view" ? (
             <Reader postId={selectedPostId} />
           ) : mode === "edit" ? (
