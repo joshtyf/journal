@@ -1,13 +1,18 @@
 import { convertFromRaw, convertToRaw, Editor, EditorState } from "draft-js";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Reader({ selectedPost, onClose }) {
-  const [editorState, setEditorState] = useState(() => {
-    const content = convertFromRaw(JSON.parse(selectedPost.content));
-    return EditorState.createWithContent(content);
-  });
+  const [editorState, setEditorState] = useState(() =>
+    EditorState.createEmpty()
+  );
 
   const [readOnly, setReadOnly] = useState(true);
+
+  useEffect(() => {
+    const content = convertFromRaw(JSON.parse(selectedPost.content));
+    const newEditorState = EditorState.createWithContent(content);
+    setEditorState(newEditorState);
+  }, [selectedPost]);
 
   const updatePost = () => {
     const data = {
