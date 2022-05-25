@@ -9,7 +9,7 @@ export default function EditorToolBar({ onSaveClick }) {
         <FontAwesomeIcon icon={faBold} />
       </button>
       <button
-        className="bg-white rounded-lg p-2 text-purple-400 hover:text-purple-500"
+        className="bg-white rounded-lg p-2 text-purple-400 hover:text-purple-500 transition-colors ease-in-out"
         onClick={onSaveClick}
       >
         <FontAwesomeIcon icon={faFloppyDisk} />
