@@ -81,7 +81,7 @@ export default function MyEditor({ postId, newPost }) {
   return (
     <div className="flex flex-col space-y-2">
       <EditorToolBar onSaveClick={saveData} />
-      <div className="shadow-md border-2 p-2">
+      <div className="shadow-md border-2 border-opacity-50 border-gray-100 p-4 rounded-md">
         <div>
           <input
             className="font-bold text-xl"
