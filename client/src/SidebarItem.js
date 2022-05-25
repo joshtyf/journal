@@ -10,7 +10,7 @@ import {
 
 export default function SidebarItem({ post }) {
   const [focused, setFocused] = useState(false);
-  const changeMainScreen = useContext(MainScreenContext);
+  const [,setMainScreenContext] = useContext(MainScreenContext);
 
   return (
     <div
@@ -32,17 +32,17 @@ export default function SidebarItem({ post }) {
         <FontAwesomeIcon
           className="cursor-pointer hover:text-blue-400"
           icon={faEye}
-          onClick={() => changeMainScreen(post.id, "view")}
+          onClick={() => setMainScreenContext(post.id, "view")}
         />
         <FontAwesomeIcon
           className="cursor-pointer hover:text-yellow-400"
           icon={faPenToSquare}
-          onClick={() => changeMainScreen(post.id, "edit")}
+          onClick={() => setMainScreenContext(post.id, "edit")}
         />
         <FontAwesomeIcon
           className="cursor-pointer hover:text-red-400"
           icon={faTrash}
-          onClick={() => changeMainScreen(post.id, "delete")}
+          onClick={() => setMainScreenContext(post.id, "delete")}
         />
       </div>
     </div>
