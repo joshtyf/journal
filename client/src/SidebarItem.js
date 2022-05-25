@@ -8,7 +8,7 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 
-export default function SidebarItem({ post }) {
+export default function SidebarItem({ post, highlight }) {
   const [focused, setFocused] = useState(false);
   const [, setMainScreenContext] = useContext(MainScreenContext);
 
@@ -20,7 +20,9 @@ export default function SidebarItem({ post }) {
     >
       <div
         key={post.id}
-        className="shadow-md border-l-8 border-purple-400 p-2 cursor-pointer hover:border-purple-500 rounded-l-lg min-w-full transition-colors ease-in-out"
+        className={`shadow-md border-l-8 border-purple-400 p-2 cursor-pointer hover:border-purple-500 rounded-l-lg min-w-full transition-colors ease-in-out ${
+          highlight ? "text-purple-400" : "text-black"
+        }`}
       >
         {post.title}
       </div>

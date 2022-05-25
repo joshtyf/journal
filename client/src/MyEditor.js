@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   convertFromRaw,
   convertToRaw,
@@ -8,12 +8,15 @@ import {
 } from "draft-js";
 import "draft-js/dist/Draft.css";
 import EditorToolBar from "./EditorToolBar";
+import { MainScreenContext } from "./App";
 
 export default function MyEditor({ postId, newPost }) {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
   const [postTitle, setPostTitle] = useState("");
+
+  const [, setMainScreenContext] = useContext(MainScreenContext);
 
   useEffect(() => {
     if (!newPost) {
@@ -55,8 +58,11 @@ export default function MyEditor({ postId, newPost }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       })
-        .then((res) => res.text())
-        .then((res) => console.log(res));
+        .then((res) => res.json())
+        .then((res) => {
+          console.log(res);
+          setMainScreenContext(postId, "view");
+        });
     } else {
       fetch("/api", {
         method: "POST",
@@ -65,8 +71,10 @@ export default function MyEditor({ postId, newPost }) {
         },
         body: JSON.stringify(data),
       })
-        .then((res) => res.text())
-        .then((res) => console.log(res));
+        .then((res) => res.json())
+        .then((res) => {
+          setMainScreenContext(res.id, "view");
+        });
     }
   };
 

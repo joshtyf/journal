@@ -41,7 +41,7 @@ const createPost = (post) => {
         if (error) {
           reject(error);
         }
-        resolve(`A new post has been added: ${results.rows[0]}`);
+        resolve(results.rows[0]);
       }
     );
   });
