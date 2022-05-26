@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import SidebarItem from "./SidebarItem";
+import { getPosts } from "./utils/api";
 
 export default function Sidebar({ selectedPostId }) {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    fetch("/api")
+    getPosts()
       .then((res) => res.json())
       .then((data) => setPosts(data));
   }, [selectedPostId]);

@@ -9,6 +9,7 @@ import {
 import "draft-js/dist/Draft.css";
 import EditorToolBar from "./EditorToolBar";
 import { MainScreenContext } from "./App";
+import { createPost, getPost, updatePost } from "./utils/api";
 
 export default function MyEditor({ postId, newPost }) {
   const [editorState, setEditorState] = useState(() =>
@@ -20,7 +21,7 @@ export default function MyEditor({ postId, newPost }) {
 
   useEffect(() => {
     if (!newPost) {
-      fetch(`/api/${postId}`)
+      getPost(postId)
         .then((res) => res.json())
         .then((res) => {
           const content = res.content;
@@ -46,32 +47,16 @@ export default function MyEditor({ postId, newPost }) {
 
   const saveData = () => {
     const content = convertToRaw(editorState.getCurrentContent());
-    const data = {
-      title: postTitle,
-      content: content,
-      date: new Date().toISOString(),
-    };
 
     if (!newPost) {
-      data.id = postId;
-      fetch(`/api/${postId}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      })
+      updatePost(postId, postTitle, content)
         .then((res) => res.json())
         .then((res) => {
           setMainScreenContext(res.id, "view");
         })
         .catch((err) => console.log(err));
     } else {
-      fetch("/api", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      })
+      createPost(postTitle, content)
         .then((res) => res.json())
         .then((res) => {
           setMainScreenContext(res.id, "view");

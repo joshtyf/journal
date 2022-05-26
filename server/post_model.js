@@ -11,12 +11,15 @@ const pool = new Pool({
 
 const getPosts = () => {
   return new Promise((resolve, reject) => {
-    pool.query("SELECT * FROM posts ORDER BY updated_at DESC", (error, results) => {
-      if (error) {
-        reject(error);
+    pool.query(
+      "SELECT * FROM posts ORDER BY updated_at DESC",
+      (error, results) => {
+        if (error) {
+          reject(error);
+        }
+        resolve(results.rows);
       }
-      resolve(results.rows);
-    });
+    );
   });
 };
 
@@ -33,10 +36,10 @@ const getPost = (id) => {
 
 const createPost = (post) => {
   return new Promise((resolve, reject) => {
-    const { title, content, date } = post;
+    const { title, content, updated_at } = post;
     pool.query(
       "INSERT INTO posts (title, content, updated_at) VALUES ($1, $2, $3) RETURNING *",
-      [title, content, date],
+      [title, content, updated_at],
       (error, results) => {
         if (error) {
           reject(error);
@@ -49,10 +52,10 @@ const createPost = (post) => {
 
 const updatePost = (updatedPost) => {
   return new Promise((resolve, reject) => {
-    const { id, content, date } = updatedPost;
+    const { id, content, updated_at } = updatedPost;
     pool.query(
       "UPDATE posts SET content = $1, updated_at = $2 WHERE id = $3 RETURNING *",
-      [content, date, id],
+      [content, updated_at, id],
       (error, results) => {
         if (error) {
           reject(error);
