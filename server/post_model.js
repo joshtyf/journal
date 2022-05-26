@@ -11,7 +11,7 @@ const pool = new Pool({
 
 const getPosts = () => {
   return new Promise((resolve, reject) => {
-    pool.query("SELECT * FROM posts", (error, results) => {
+    pool.query("SELECT * FROM posts ORDER BY updated_at DESC", (error, results) => {
       if (error) {
         reject(error);
       }
@@ -33,10 +33,10 @@ const getPost = (id) => {
 
 const createPost = (post) => {
   return new Promise((resolve, reject) => {
-    const { title, content } = post;
+    const { title, content, date } = post;
     pool.query(
-      "INSERT INTO posts (title, content) VALUES ($1, $2) RETURNING *",
-      [title, content],
+      "INSERT INTO posts (title, content, updated_at) VALUES ($1, $2, $3) RETURNING *",
+      [title, content, date],
       (error, results) => {
         if (error) {
           reject(error);
@@ -49,15 +49,15 @@ const createPost = (post) => {
 
 const updatePost = (updatedPost) => {
   return new Promise((resolve, reject) => {
-    const { id, content } = updatedPost;
+    const { id, content, date } = updatedPost;
     pool.query(
-      "UPDATE posts SET content = $1 WHERE id = $2",
-      [content, id],
+      "UPDATE posts SET content = $1, updated_at = $2 WHERE id = $3 RETURNING *",
+      [content, date, id],
       (error, results) => {
         if (error) {
           reject(error);
         }
-        resolve(`Post updated`);
+        resolve(results.rows[0]);
       }
     );
   });

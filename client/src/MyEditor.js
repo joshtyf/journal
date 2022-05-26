@@ -49,6 +49,7 @@ export default function MyEditor({ postId, newPost }) {
     const data = {
       title: postTitle,
       content: content,
+      date: new Date().toISOString(),
     };
 
     if (!newPost) {
@@ -60,9 +61,9 @@ export default function MyEditor({ postId, newPost }) {
       })
         .then((res) => res.json())
         .then((res) => {
-          console.log(res);
-          setMainScreenContext(postId, "view");
-        });
+          setMainScreenContext(res.id, "view");
+        })
+        .catch((err) => console.log(err));
     } else {
       fetch("/api", {
         method: "POST",
