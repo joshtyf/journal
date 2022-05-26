@@ -41,27 +41,18 @@ export default function MyEditor({ postId, newPost }) {
       setEditorState(newState);
       return "handled";
     }
-
     return "not-handled";
   };
 
   const saveData = () => {
     const content = convertToRaw(editorState.getCurrentContent());
-
-    if (!newPost) {
-      updatePost(postId, postTitle, content)
-        .then((res) => res.json())
-        .then((res) => {
-          setMainScreenContext(res.id, "view");
-        })
-        .catch((err) => console.log(err));
-    } else {
-      createPost(postTitle, content)
-        .then((res) => res.json())
-        .then((res) => {
-          setMainScreenContext(res.id, "view");
-        });
-    }
+    const resPromise = newPost
+      ? createPost(postTitle, content)
+      : updatePost(postId, postTitle, content);
+    resPromise
+      .then((res) => res.json())
+      .then((res) => setMainScreenContext(res.id, "view"))
+      .catch((err) => console.log(err));
   };
 
   return (

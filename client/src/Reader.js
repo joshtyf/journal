@@ -1,36 +1,40 @@
 import { convertFromRaw, Editor, EditorState } from "draft-js";
 import React, { useEffect, useState } from "react";
+import { getPost } from "./utils/api";
 
 export default function Reader({ postId }) {
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
-  );
-  const [postTitle, setPostTitle] = useState(null);
-  const [postDate, setPostDate] = useState(null);
+  const [post, setPost] = useState({
+    title: null,
+    updated_at: null,
+    content: EditorState.createEmpty(),
+  });
 
   useEffect(() => {
-    fetch(`/api/${postId}`)
+    getPost(postId)
       .then((res) => res.json())
       .then((res) => {
-        const content = res.content;
+        const { title, content, updated_at } = res;
         const newEditorState = EditorState.createWithContent(
           convertFromRaw(JSON.parse(content))
         );
-        setEditorState(newEditorState);
-        setPostTitle(res.title);
-        const date = new Date(res.updated_at);
-        setPostDate(date.toLocaleString());
-      });
+
+        setPost({
+          title: title,
+          content: newEditorState,
+          updated_at: new Date(updated_at).toLocaleString(),
+        });
+      })
+      .catch((err) => console.log(err));
   }, [postId]);
 
   return (
     <div className="p-4 rounded-md shadow-md border-2 border-opacity-50 border-gray-100">
       <div className="flex justify-between">
-        <div className="font-bold">{postTitle}</div>
-        <div className="">Last updated: {postDate}</div>
+        <div className="font-bold">{post.title}</div>
+        <div className="">Last updated: {post.updated_at}</div>
       </div>
 
-      <Editor editorState={editorState} readOnly />
+      <Editor editorState={post.content} readOnly />
     </div>
   );
 }
