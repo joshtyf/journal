@@ -86,7 +86,7 @@ export default function MyEditor({ postId, newPost }) {
           <input
             className="font-bold text-xl"
             type="text"
-            placeholder="Enter your title..."
+            placeholder="Enter your title"
             value={postTitle}
             onChange={(e) => setPostTitle(e.target.value)}
           />
