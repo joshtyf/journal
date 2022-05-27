@@ -1,16 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import SidebarItem from "./SidebarItem";
-import { getPosts } from "./utils/api";
 
-export default function Sidebar({ selectedPostId }) {
-  const [posts, setPosts] = useState([]);
-
-  useEffect(() => {
-    getPosts()
-      .then((res) => res.json())
-      .then((data) => setPosts(data));
-  }, [selectedPostId]);
-
+export default function Sidebar({ selectedPostId, posts }) {
   return (
     <div className="flex flex-col gap-y-2">
       <div className="font-bold text-xl text-purple-400">Journal App</div>

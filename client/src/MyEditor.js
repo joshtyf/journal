@@ -11,7 +11,7 @@ import EditorToolBar from "./EditorToolBar";
 import { MainScreenContext } from "./App";
 import { createPost, getPost, updatePost } from "./utils/api";
 
-export default function MyEditor({ postId, newPost }) {
+export default function MyEditor({ postId, newPost, onUpload }) {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
@@ -53,7 +53,10 @@ export default function MyEditor({ postId, newPost }) {
       : updatePost(postId, postTitle, content);
     resPromise
       .then((res) => res.json())
-      .then((res) => setMainScreenContext(res.id, "view"))
+      .then((res) => {
+        setMainScreenContext(res.id, "view");
+        onUpload(res)
+      })
       .catch((err) => console.log(err));
   };
 
