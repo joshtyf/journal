@@ -64,11 +64,18 @@ export default function MyEditor({ postId, newPost, onUpload }) {
       .catch((err) => console.log(err));
   };
 
+  const handleChangeInlineStyle = (style) => {
+    setEditorState(RichUtils.toggleInlineStyle(editorState, style));
+  };
+
   return loading ? (
     <Loading />
   ) : (
     <div className="flex flex-col space-y-2">
-      <EditorToolBar onSaveClick={saveData} />
+      <EditorToolBar
+        onSaveClick={saveData}
+        onStyleSelect={handleChangeInlineStyle}
+      />
       <div className="shadow-md border-2 border-opacity-50 border-gray-100 p-4 rounded-md">
         <div>
           <input
