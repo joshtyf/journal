@@ -1,6 +1,12 @@
 import express from "express";
 import cors from "cors";
-import { getPosts, createPost, updatePost, getPost } from "./post_model.js";
+import {
+  getPosts,
+  createPost,
+  updatePost,
+  getPost,
+  deletePost,
+} from "./post_model.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
@@ -53,6 +59,14 @@ app.patch("/api/:id", (req, res) => {
   updatePost(req.body)
     .then((response) => {
       res.status(200).send(response);
+    })
+    .catch((error) => res.status(500).send(error));
+});
+
+app.delete("/api/:id", (req, res) => {
+  deletePost(req.params.id)
+    .then((response) => {
+      res.status(200).send(`Deleted post with id ${response.id}`);
     })
     .catch((error) => res.status(500).send(error));
 });

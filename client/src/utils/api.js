@@ -34,3 +34,9 @@ export function updatePost(id, title, content) {
     body: JSON.stringify(body),
   });
 }
+
+export function deletePost(id) {
+  return fetch(`/api/${id}`, {
+    method: "DELETE",
+  });
+}

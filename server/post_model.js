@@ -66,4 +66,19 @@ const updatePost = (updatedPost) => {
   });
 };
 
-export { getPosts, createPost, updatePost, getPost };
+const deletePost = (id) => {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      "DELETE FROM posts WHERE id = $1 RETURNING id",
+      [id],
+      (error, results) => {
+        if (error) {
+          reject(error);
+        }
+        resolve(results.rows[0]);
+      }
+    );
+  });
+};
+
+export { getPosts, createPost, updatePost, getPost, deletePost };

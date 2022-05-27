@@ -7,10 +7,22 @@ import {
   faPenToSquare,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
+import { deletePost } from "./utils/api";
 
 export default function SidebarItem({ post, highlight }) {
   const [focused, setFocused] = useState(false);
-  const { setMainScreenContext } = useContext(MainScreenContext);
+  const { deleteFromPosts, setMainScreenContext } = useContext(MainScreenContext);
+
+  const handleDelete = () => {
+    deletePost(post.id)
+      .then((res) => res.text())
+      .then((res) => {
+        console.log(res);
+        setMainScreenContext(null, null);
+        deleteFromPosts(post.id);
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <div
@@ -44,7 +56,7 @@ export default function SidebarItem({ post, highlight }) {
         <FontAwesomeIcon
           className="cursor-pointer hover:text-red-400"
           icon={faTrash}
-          onClick={() => setMainScreenContext(post.id, "delete")}
+          onClick={handleDelete}
         />
       </div>
     </div>

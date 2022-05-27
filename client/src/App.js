@@ -40,6 +40,10 @@ export default function App() {
     setPosts([post, ...temp].sort((a, b) => a.updated_at - b.updated_at));
   };
 
+  const deleteFromPosts = (id) => {
+    setPosts(posts.filter((e) => e.id !== id));
+  };
+
   return (
     <>
       {loading ? (
@@ -47,7 +51,9 @@ export default function App() {
           <Loading />
         </div>
       ) : (
-        <MainScreenContext.Provider value={{ setMainScreenContext }}>
+        <MainScreenContext.Provider
+          value={{ deleteFromPosts, setMainScreenContext }}
+        >
           <div className="p-4 flex space-x-2">
             <div className="w-1/6 border-r-2">
               <Sidebar selectedPostId={selectedPostId} posts={posts} />
