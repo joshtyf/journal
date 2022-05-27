@@ -39,7 +39,7 @@ export default function Reader({ postId }) {
       ) : (
         <div className="p-4 rounded-md shadow-md border-2 border-opacity-50 border-gray-100">
           <div className="flex justify-between">
-            <div className="font-bold">{post.title}</div>
+            <div className="font-bold text-xl">{post.title}</div>
             <div className="">Last updated: {post.updated_at}</div>
           </div>
           <Editor editorState={post.content} readOnly />
