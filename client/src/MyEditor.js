@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   convertFromRaw,
   convertToRaw,
@@ -10,13 +10,14 @@ import "draft-js/dist/Draft.css";
 import EditorToolBar from "./EditorToolBar";
 import { MainScreenContext } from "./App";
 import { createPost, getPost, updatePost } from "./utils/api";
+import Loading from "./Loading";
 
 export default function MyEditor({ postId, newPost, onUpload }) {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
   const [postTitle, setPostTitle] = useState("");
-  const titleInputRef = useRef(null);
+  const [loading, setLoading] = useState(true);
 
   const { setMainScreenContext } = useContext(MainScreenContext);
 
@@ -31,9 +32,12 @@ export default function MyEditor({ postId, newPost, onUpload }) {
           );
           setEditorState(newEditorState);
           setPostTitle(res.title);
-        });
+          setLoading(false);
+        })
+        .catch((err) => console.log(err));
+    } else {
+      setLoading(false);
     }
-    titleInputRef.current.focus();
   }, [postId, newPost]);
 
   const handleKeyCommand = (command, editorState) => {
@@ -60,18 +64,20 @@ export default function MyEditor({ postId, newPost, onUpload }) {
       .catch((err) => console.log(err));
   };
 
-  return (
+  return loading ? (
+    <Loading />
+  ) : (
     <div className="flex flex-col space-y-2">
       <EditorToolBar onSaveClick={saveData} />
       <div className="shadow-md border-2 border-opacity-50 border-gray-100 p-4 rounded-md">
         <div>
           <input
-            ref={titleInputRef}
             className="font-bold text-xl focus:outline-none"
             type="text"
             placeholder="Enter your title"
             value={postTitle}
             onChange={(e) => setPostTitle(e.target.value)}
+            autoFocus
           />
         </div>
         <Editor

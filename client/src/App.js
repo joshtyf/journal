@@ -7,6 +7,7 @@ import LandingScreen from "./LandingScreen";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { getPosts } from "./utils/api";
+import Loading from "./Loading";
 
 export const MainScreenContext = createContext();
 
@@ -14,6 +15,7 @@ export default function App() {
   const [selectedPostId, setSelectedPostId] = useState(null);
   const [mode, setMode] = useState(null);
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const setMainScreenContext = (postId, mode) => {
     setSelectedPostId(postId);
@@ -23,7 +25,10 @@ export default function App() {
   useEffect(() => {
     getPosts()
       .then((res) => res.json())
-      .then((res) => setPosts(res));
+      .then((res) => {
+        setPosts(res);
+        setLoading(false);
+      });
   }, []);
 
   const addPost = (post) => {
@@ -36,35 +41,43 @@ export default function App() {
   };
 
   return (
-    <MainScreenContext.Provider value={{ setMainScreenContext }}>
-      <div className="p-4 flex space-x-2">
-        <div className="w-1/6 border-r-2">
-          <Sidebar selectedPostId={selectedPostId} posts={posts} />
+    <>
+      {loading ? (
+        <div className="h-screen">
+          <Loading />
         </div>
-        <div className="flex flex-col w-5/6">
-          {mode !== null && (
-            <div
-              className="self-end text-red-400 hover:text-red-500 transition-colors ease-in-out cursor-pointer"
-              onClick={() => setMainScreenContext(null, null)}
-            >
-              <FontAwesomeIcon icon={faXmark} size="2x" />
+      ) : (
+        <MainScreenContext.Provider value={{ setMainScreenContext }}>
+          <div className="p-4 flex space-x-2">
+            <div className="w-1/6 border-r-2">
+              <Sidebar selectedPostId={selectedPostId} posts={posts} />
             </div>
-          )}
-          {mode === "view" ? (
-            <Reader postId={selectedPostId} />
-          ) : mode === "edit" ? (
-            <MyEditor
-              postId={selectedPostId}
-              newPost={false}
-              onUpload={updatePosts}
-            />
-          ) : mode === "create" ? (
-            <MyEditor newPost onUpload={addPost} />
-          ) : (
-            <LandingScreen />
-          )}
-        </div>
-      </div>{" "}
-    </MainScreenContext.Provider>
+            <div className="flex flex-col w-5/6">
+              {mode !== null && (
+                <div
+                  className="self-end text-red-400 hover:text-red-500 transition-colors ease-in-out cursor-pointer"
+                  onClick={() => setMainScreenContext(null, null)}
+                >
+                  <FontAwesomeIcon icon={faXmark} size="2x" />
+                </div>
+              )}
+              {mode === "view" ? (
+                <Reader postId={selectedPostId} />
+              ) : mode === "edit" ? (
+                <MyEditor
+                  postId={selectedPostId}
+                  newPost={false}
+                  onUpload={updatePosts}
+                />
+              ) : mode === "create" ? (
+                <MyEditor newPost onUpload={addPost} />
+              ) : (
+                <LandingScreen />
+              )}
+            </div>
+          </div>{" "}
+        </MainScreenContext.Provider>
+      )}
+    </>
   );
 }
