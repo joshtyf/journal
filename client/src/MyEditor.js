@@ -18,7 +18,7 @@ export default function MyEditor({ postId, newPost, onUpload }) {
   const [postTitle, setPostTitle] = useState("");
   const titleInputRef = useRef(null);
 
-  const [, setMainScreenContext] = useContext(MainScreenContext);
+  const { setMainScreenContext } = useContext(MainScreenContext);
 
   useEffect(() => {
     if (!newPost) {
@@ -55,7 +55,7 @@ export default function MyEditor({ postId, newPost, onUpload }) {
       .then((res) => res.json())
       .then((res) => {
         setMainScreenContext(res.id, "view");
-        onUpload(res)
+        onUpload(res);
       })
       .catch((err) => console.log(err));
   };

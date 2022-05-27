@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { MainScreenContext } from "./App";
 export default function LandingScreen() {
-  const [, setMainScreenContext] = useContext(MainScreenContext);
+  const { setMainScreenContext } = useContext(MainScreenContext);
 
   return (
     <div className="grid place-content-center text-center h-full border-2 border-opacity-50 shadow-md rounded-md border-gray-100 gap-y-2 py-10">

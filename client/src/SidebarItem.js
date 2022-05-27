@@ -10,7 +10,7 @@ import {
 
 export default function SidebarItem({ post, highlight }) {
   const [focused, setFocused] = useState(false);
-  const [, setMainScreenContext] = useContext(MainScreenContext);
+  const { setMainScreenContext } = useContext(MainScreenContext);
 
   return (
     <div

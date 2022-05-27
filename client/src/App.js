@@ -36,9 +36,7 @@ export default function App() {
   };
 
   return (
-    <MainScreenContext.Provider
-      value={[[selectedPostId, mode], setMainScreenContext]}
-    >
+    <MainScreenContext.Provider value={{ setMainScreenContext }}>
       <div className="p-4 flex space-x-2">
         <div className="w-1/6 border-r-2">
           <Sidebar selectedPostId={selectedPostId} posts={posts} />
