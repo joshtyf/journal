@@ -1,10 +1,14 @@
 import pg from "pg";
 
 const Pool = pg.Pool;
-const connectionString =
-  "postgres://gyrfihliipuihi:30c74e7aee874b5ecca4139d9cf3f2a76508af1d45725d8fac13ac33ccb342df@ec2-34-230-153-41.compute-1.amazonaws.com:5432/dfglsmjdadonk1";
+
 const pool = new Pool({
-  connectionString,
+  database: process.env.PSQL_DB || "journal",
+  host: process.env.PSQL_HOST || "localhost",
+  password: process.env.PSQL_PW || "",
+  user: process.env.PSQL_USER || "joshua",
+  port: 5432,
+  ssl: true,
 });
 
 const getPosts = () => {
