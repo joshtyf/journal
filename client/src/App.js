@@ -32,12 +32,12 @@ export default function App() {
   }, []);
 
   const addPost = (post) => {
-    setPosts([...posts, post].sort((a, b) => a.updated_at - b.updated_at));
+    setPosts([post, ...posts]);
   };
 
   const updatePosts = (post) => {
     const temp = posts.filter((e) => e.id !== post.id);
-    setPosts([post, ...temp].sort((a, b) => a.updated_at - b.updated_at));
+    setPosts([post, ...temp]);
   };
 
   const deleteFromPosts = (id) => {
