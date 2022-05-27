@@ -1,32 +1,28 @@
 import pg from "pg";
 
-const Pool = pg.Pool;
+const Client = pg.Client;
 
-const pool = new Pool({
+const client = new Client({
   connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false,
   },
 });
 
+client.connect();
+
 const getPosts = () => {
   return new Promise((resolve, reject) => {
-    pool.connect((err, client, release) => {
-      if (err) {
-        return console.error("Error acquiring client", err.stack);
-      }
-      client.query(
-        "SELECT * FROM posts ORDER BY updated_at DESC",
-        (error, results) => {
-          release();
-          if (error) {
-            reject(error);
-          }
-          console.log(results);
-          resolve(results.rows);
+    client.query(
+      "SELECT * FROM posts ORDER BY updated_at DESC",
+      (error, results) => {
+        client.end();
+        if (error) {
+          reject(error);
         }
-      );
-    });
+        resolve(results.rows);
+      }
+    );
   });
 };
 
@@ -44,10 +40,11 @@ const getPost = (id) => {
 const createPost = (post) => {
   return new Promise((resolve, reject) => {
     const { title, content, updated_at } = post;
-    pool.query(
+    client.query(
       "INSERT INTO posts (title, content, updated_at) VALUES ($1, $2, $3) RETURNING *",
       [title, content, updated_at],
       (error, results) => {
+        client.end()
         if (error) {
           reject(error);
         }
