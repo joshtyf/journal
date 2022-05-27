@@ -61,7 +61,7 @@ export default function App() {
               onUpload={updatePosts}
             />
           ) : mode === "create" ? (
-            <MyEditor newPost={true} onUpload={addPost} />
+            <MyEditor newPost onUpload={addPost} />
           ) : (
             <LandingScreen />
           )}
