@@ -3,10 +3,11 @@ import pg from "pg";
 const Pool = pg.Pool;
 
 const pool = new Pool({
-  user: "joshua",
-  host: "localhost",
-  database: "journal",
+  user: process.env.PSQL_USER || "joshua",
+  host: process.env.PSQL_HOST || "localhost",
+  database: process.env.PSQL_DB || "journal",
   port: 5432,
+  password: process.env.PSQL_PW || "",
 });
 
 const getPosts = () => {
