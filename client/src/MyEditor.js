@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import {
   convertFromRaw,
   convertToRaw,
@@ -16,6 +16,7 @@ export default function MyEditor({ postId, newPost }) {
     EditorState.createEmpty()
   );
   const [postTitle, setPostTitle] = useState("");
+  const titleInputRef = useRef(null);
 
   const [, setMainScreenContext] = useContext(MainScreenContext);
 
@@ -32,6 +33,7 @@ export default function MyEditor({ postId, newPost }) {
           setPostTitle(res.title);
         });
     }
+    titleInputRef.current.focus();
   }, [postId, newPost]);
 
   const handleKeyCommand = (command, editorState) => {
@@ -61,7 +63,8 @@ export default function MyEditor({ postId, newPost }) {
       <div className="shadow-md border-2 border-opacity-50 border-gray-100 p-4 rounded-md">
         <div>
           <input
-            className="font-bold text-xl"
+            ref={titleInputRef}
+            className="font-bold text-xl focus:outline-none"
             type="text"
             placeholder="Enter your title"
             value={postTitle}
