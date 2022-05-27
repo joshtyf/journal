@@ -1,26 +1,30 @@
 import pg from "pg";
 
 const Pool = pg.Pool;
-
+const connectionString =
+  "postgres://gyrfihliipuihi:30c74e7aee874b5ecca4139d9cf3f2a76508af1d45725d8fac13ac33ccb342df@ec2-34-230-153-41.compute-1.amazonaws.com:5432/dfglsmjdadonk1";
 const pool = new Pool({
-  user: process.env.PSQL_USER || "joshua",
-  host: process.env.PSQL_HOST || "localhost",
-  database: process.env.PSQL_DB || "journal",
-  port: 5432,
-  password: process.env.PSQL_PW || "",
+  connectionString,
 });
 
 const getPosts = () => {
   return new Promise((resolve, reject) => {
-    pool.query(
-      "SELECT * FROM posts ORDER BY updated_at DESC",
-      (error, results) => {
-        if (error) {
-          reject(error);
-        }
-        resolve(results.rows);
+    pool.connect((err, client, release) => {
+      if (err) {
+        return console.error("Error acquiring client", err.stack);
       }
-    );
+      client.query(
+        "SELECT * FROM posts ORDER BY updated_at DESC",
+        (error, results) => {
+          release();
+          if (error) {
+            reject(error);
+          }
+          console.log(results);
+          resolve(results.rows);
+        }
+      );
+    });
   });
 };
 
