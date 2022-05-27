@@ -30,14 +30,13 @@ if (env == "production") {
 }
 
 app.get("/api", (req, res) => {
-  res.send("okay");
-  // getPosts()
-  //   .then((response) => {
-  //     res.status(200).send(response);
-  //   })
-  //   .catch((error) => {
-  //     res.status(500).send(error);
-  //   });
+  getPosts()
+    .then((response) => {
+      res.status(200).send(response);
+    })
+    .catch((error) => {
+      res.status(500).send(error);
+    });
 });
 
 app.get("/api/:id", (req, res) => {

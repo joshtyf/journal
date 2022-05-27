@@ -22,21 +22,16 @@ export default function App() {
     setMode(mode);
   };
 
-  // useEffect(() => {
-  //   getPosts()
-  //     .then((res) => res.json())
-  //     .then((res) => {
-  //       setPosts(res);
-  //       setLoading(false);
-  //     })
-  //     .catch((err) => console.log(err));
-  // }, []);
-
   useEffect(() => {
     getPosts()
-      .then((res) => res.text())
-      .then((res) => console.log(res));
-  });
+      .then((res) => res.json())
+      .then((res) => {
+        setPosts(res);
+        setLoading(false);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   const addPost = (post) => {
     setPosts([post, ...posts]);
   };
