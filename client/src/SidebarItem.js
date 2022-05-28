@@ -11,13 +11,22 @@ import { deletePost } from "./utils/api";
 
 export default function SidebarItem({ post, highlight }) {
   const [focused, setFocused] = useState(false);
-  const { deleteFromPosts, setMainScreenContext } = useContext(MainScreenContext);
+  const { deleteFromPosts, setMainScreenContext } =
+    useContext(MainScreenContext);
 
   const handleDelete = () => {
     deletePost(post.id)
-      .then((res) => res.text())
-      .then((res) => {
-        console.log(res);
+      .then((response) => {
+        if (response.ok) {
+          return response.text();
+        } else {
+          throw new Error(
+            `${response.statusText}, status code: ${response.status}`
+          );
+        }
+      })
+      .then((result) => {
+        console.log(result);
         setMainScreenContext(null, null);
         deleteFromPosts(post.id);
       })

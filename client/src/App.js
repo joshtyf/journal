@@ -24,9 +24,17 @@ export default function App() {
 
   useEffect(() => {
     getPosts()
-      .then((res) => res.json())
-      .then((res) => {
-        setPosts(res);
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error(
+            `${response.statusText}, status code: ${response.status}`
+          );
+        }
+      })
+      .then((result) => {
+        setPosts(result);
         setLoading(false);
       })
       .catch((err) => console.log("here", err));

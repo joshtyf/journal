@@ -14,9 +14,17 @@ export default function Reader({ postId }) {
 
   useEffect(() => {
     getPost(postId)
-      .then((res) => res.json())
-      .then((res) => {
-        const { title, content, updated_at } = res;
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error(
+            `${response.statusText}, status code: ${response.status}`
+          );
+        }
+      })
+      .then((result) => {
+        const { title, content, updated_at } = result;
         const newEditorState = EditorState.createWithContent(
           convertFromRaw(JSON.parse(content))
         );

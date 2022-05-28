@@ -51,15 +51,24 @@ export default function MyEditor({ postId, newPost, onUpload }) {
   };
 
   const saveData = () => {
+    setLoading(true);
     const content = convertToRaw(editorState.getCurrentContent());
     const resPromise = newPost
       ? createPost(postTitle, content)
       : updatePost(postId, postTitle, content);
     resPromise
-      .then((res) => res.json())
-      .then((res) => {
-        setMainScreenContext(res.id, "view");
-        onUpload(res);
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error(
+            `${response.statusText}, status code: ${response.status}`
+          );
+        }
+      })
+      .then((result) => {
+        setMainScreenContext(result.id, "view");
+        onUpload(result);
       })
       .catch((err) => console.log(err));
   };
