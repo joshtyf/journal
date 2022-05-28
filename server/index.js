@@ -15,11 +15,11 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(express.json());
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-  })
-);
+// app.use(
+//   cors({
+//     origin: "http://localhost:3000",
+//   })
+// );
 
 const env = process.env.NODE_ENV || "development";
 if (env == "production") {
@@ -30,6 +30,7 @@ if (env == "production") {
 }
 
 app.get("/api", (req, res) => {
+  console.log("method called");
   getPosts()
     .then((response) => {
       res.status(200).send(response);

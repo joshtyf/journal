@@ -29,7 +29,7 @@ export default function App() {
         setPosts(res);
         setLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log("here", err));
   }, []);
 
   const addPost = (post) => {
